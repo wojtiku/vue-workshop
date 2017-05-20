@@ -1,0 +1,287 @@
+@import "commons";
+
+.lozenge,
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+body {
+  background: $c-background;
+  padding: $gutter;
+  border-top: solid 10px $c-primary;
+  margin: 0;
+  font-size: $baseFontSize;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: $gutter/3;
+}
+
+.box {
+  @include box();
+}
+
+.container {
+  clear: both;
+  max-width: 1200px;
+  margin: 0 auto $gutter;
+}
+
+a {
+  color: $c-primary;
+  text-decoration: none;
+  @include transition();
+  &:hover {
+    color: darken($c-primary, 10%);
+    text-decoration: underline;
+  }
+}
+
+.navbar {
+  @include box();
+  line-height: 30px;
+  @include clearfix();
+
+  &--brand {
+    font-size: 20px;
+    float: left;
+    margin-right: $gutter;
+    color: $c-black;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &--menu {
+    float: left;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: inline-block;
+      margin-right: $gutter/2;
+    }
+  }
+}
+
+.product-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0 (-$gutter);
+  display: flex;
+  flex-wrap: wrap;
+
+  &--product {
+    $inRow: 4;
+    flex-basis: calc(#{100%/$inRow} - #{$gutter});
+  }
+}
+
+.product-list--product {
+  @include box();
+  display: flex;
+  flex-direction: column;
+  margin-left: $gutter;
+
+  &--description{
+    font-size: 14px;
+  }
+
+  &--caption {
+    flex: 1 1 auto;
+  }
+
+  @include productCommons();
+}
+
+.product {
+  @include box();
+  @include clearfix();
+  @include productCommons();
+
+  &--image {
+    position: relative;
+    float: right;
+    max-width: 300px;
+    margin-left: $gutter;
+    z-index: 1;
+  }
+
+  &--attributes {
+    $verticalPadding: $gutter/3;
+    position: relative;
+    border-top: solid 1px #ccc;
+    max-width: 400px;
+    dt {
+      padding: $verticalPadding;
+      position: absolute;
+      left: 0;
+    }
+    dd {
+      margin: 0;
+      padding: $verticalPadding $verticalPadding $verticalPadding 120px;
+
+      border-bottom: solid 1px #ccc;
+
+      ul {
+        margin: 0;
+        padding: 0 20px;
+      }
+    }
+  }
+}
+
+.ribbon {
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-left-radius: $border-radius;
+  color: crimson;
+
+  &:before {
+    content: "";
+    display: block;
+    text-align: center;
+    transform: rotate(-45deg);
+    position: relative;
+    top: 0;
+    left: -60px;
+    width: 120px;
+    height: 20px;
+    background: currentColor;
+  }
+}
+
+.color-swatch {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+}
+
+.price {
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.highlight {
+  background: $c-highlight;
+}
+
+button,
+.btn {
+  background: $c-primary;
+  color: $c-white;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: $border-radius;
+  @include transition();
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+
+  &:disabled {
+    opacity: 0.2;
+  }
+
+  &:not(:disabled):hover {
+    color: $c-white;
+    background: darken($c-primary, 10%);
+    text-decoration: none;
+  }
+}
+
+.form-row {
+  $labelWidth: 150px;
+
+  position: relative;
+  padding-left: $labelWidth;
+  margin-bottom: $gutter/2;
+
+  & > label {
+    position: absolute;
+    margin-left: -$labelWidth;
+    padding: 5px 3px;
+  }
+  label {
+    display: block;
+    margin-bottom: $gutter/6;
+  }
+}
+
+select,
+textarea,
+input[type=text],
+input[type=number] {
+  box-sizing: border-box;
+  border: solid 1px #ccc;
+  border-radius: $border-radius;
+  padding: 5px 3px;
+  font-size: inherit;
+  min-width: 300px;
+  background: $c-white;
+}
+
+input[type=color] {
+  border-radius: $border-radius;
+  background: $c-white;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+.photo-preview {
+  display: block;
+  margin: $gutter/6 0;
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.lozenge {
+  display: inline-block;
+  padding: 3px 5px;
+  border: solid 1px;
+  border-radius: $border-radius;
+  color: $c-secondary;
+  background: $c-white;
+  font-size: 10px;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 100px auto;
+  background-color: $c-primary;
+
+  border-radius: 100%;
+  animation: sk-scaleout 1.0s infinite ease-in-out;
+}
+
+@keyframes sk-scaleout {
+  0% {
+    transform: scale(0);
+  } 100% {
+      transform: scale(1.0);
+      opacity: 0;
+    }
+}
+
+.broken-image {
+  padding: $gutter/3;
+  text-align: center;
+  background: $c-background;
+
+  &:before {
+    content: "Photo unavailable, use your imagination :)";
+    display: block;
+    margin-bottom: $gutter/3;
+  }
+}
