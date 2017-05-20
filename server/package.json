@@ -1,0 +1,16 @@
+{
+  "name": "vue-workshop-backend",
+  "version": "1.0.0",
+  "description": "Dead-simple backend with fake data for the vue.js workshop.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "faker": "^4.1.0"
+  }
+}

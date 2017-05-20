@@ -1,0 +1,25 @@
+<!-- basic -->
+<label><input type="checkbox" value="Steel" v-model="product.materials"/> Steel</label>
+<label><input type="checkbox" value="Wooden" v-model="product.materials"/> Wooden</label>
+<label><input type="checkbox" value="Concrete" v-model="product.materials"/> Concrete</label>
+<label><input type="checkbox" value="Plastic" v-model="product.materials"/> Plastic</label>
+<label><input type="checkbox" value="Cotton" v-model="product.materials"/> Cotton</label>
+<label><input type="checkbox" value="Granite" v-model="product.materials"/> Granite</label>
+<label><input type="checkbox" value="Rubber" v-model="product.materials"/> Rubber</label>
+<label><input type="checkbox" value="Metal" v-model="product.materials"/> Metal</label>
+<label><input type="checkbox" value="Soft" v-model="product.materials"/> Soft</label>
+<label><input type="checkbox" value="Fresh" v-model="product.materials"/> Fresh</label>
+<label><input type="checkbox" value="Frozen" v-model="product.materials"/> Frozen</label>
+
+<!-- with vuelidate -->
+<label><input type="checkbox" v-model="$v.formProduct.materials.$model" value="Steel"/> Steel</label>
+<label><input type="checkbox" v-model="$v.formProduct.materials.$model" value="Wooden"/> Wooden</label>
+<label><input type="checkbox" v-model="$v.formProduct.materials.$model" value="Concrete"/> Concrete</label>
+<label><input type="checkbox" v-model="$v.formProduct.materials.$model" value="Plastic"/> Plastic</label>
+<label><input type="checkbox" v-model="$v.formProduct.materials.$model" value="Cotton"/> Cotton</label>
+<label><input type="checkbox" v-model="$v.formProduct.materials.$model" value="Granite"/> Granite</label>
+<label><input type="checkbox" v-model="$v.formProduct.materials.$model" value="Rubber"/> Rubber</label>
+<label><input type="checkbox" v-model="$v.formProduct.materials.$model" value="Metal"/> Metal</label>
+<label><input type="checkbox" v-model="$v.formProduct.materials.$model" value="Soft"/> Soft</label>
+<label><input type="checkbox" v-model="$v.formProduct.materials.$model" value="Fresh"/> Fresh</label>
+<label><input type="checkbox" v-model="$v.formProduct.materials.$model" value="Frozen"/> Frozen</label>
