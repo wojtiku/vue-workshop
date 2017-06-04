@@ -28,7 +28,7 @@
             v-for="product in products"
             :class="{ highlight: product.price < 300 }">
           <div class="ribbon" :style="{ color: product.color }" />
-            <img class="product-list--product--image" :src="product.photo" alt=""/>
+            <img class="product-list--product--image" :src="product.photo" alt="" v-style-when-broken />
             <div class="product-list--product--caption">
               <h4 class="product-list--product--name">
                 {{ product.name }}
@@ -58,7 +58,7 @@
 
     <div class="container">
       <article class="product">
-          <img class="product--image" :src="product.photo" alt=""/>
+          <img class="product--image" :src="product.photo" alt="" v-style-when-broken/>
           <div class="product--caption">
             <h1 class="product--name">
               {{ product.name }}
@@ -114,7 +114,7 @@
         <div class="form-row">
           <label for="edit-photo">Photo</label>
           <input id="edit-photo" v-model.trim.lazy="product.photo" type="text"/>
-          <img class="photo-preview" :src="product.photo"/>
+          <img class="photo-preview" :src="product.photo" v-style-when-broken/>
         </div>
 
         <div class="form-row">
