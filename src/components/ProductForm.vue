@@ -1,7 +1,11 @@
 <template>
   <LoadingStatus :isLoading="isLoading" :isError="isError">
-    <form action="#" class="box product-edit">
+    <form action="#" @submit.prevent="saveProduct" class="box product-edit">
       <h2>Edit product</h2>
+
+      <p v-if="saveError">
+        <span class="lozenge">ERROR</span> Could not save the product.
+      </p>
 
       <div class="form-row">
         <label for="edit-name">Name</label>
@@ -89,7 +93,7 @@
 <script>
   import LoadingStatus from "/src/components/LoadingStatus";
   import {required, numeric} from 'vuelidate/lib/validators'
-  import {getProductById} from '/src/productService';
+  import {getProductById, updateProduct} from '/src/productService';
 
   export default {
     props: {
@@ -99,7 +103,8 @@
       return {
         formProduct: {},
         isLoading: true,
-        isError: false
+        isError: false,
+        saveError: false,
       }
     },
     created() {
@@ -124,6 +129,16 @@
           this.formProduct = {};
           this.isLoading = false;
           this.isError = true;
+        }
+      },
+      saveProduct() {
+        if (!this.$v.$invalid) {
+          this.isLoading = true;
+          this.saveError = false;
+          updateProduct(this.formProduct)
+            .then(() => this.$router.push("/product/" + this.id))
+            .catch(() => this.saveError = true)
+            .then(() => this.isLoading = false);
         }
       }
     },
