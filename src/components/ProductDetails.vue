@@ -1,55 +1,87 @@
 <template>
-  <article class="product">
-    <img class="product--image" :src="product.photo" alt="" v-style-when-broken/>
-    <div class="product--caption">
-      <h1 class="product--name">
-        {{ product.name }}
-      </h1>
-      <div class="product--category">
-        Category: <a href="#">{{ product.department }}</a>
+  <LoadingStatus :isLoading="isLoading" :isError="isError">
+    <article class="product">
+      <img class="product--image" :src="product.photo" alt="" v-style-when-broken/>
+      <div class="product--caption">
+        <h1 class="product--name">
+          {{ product.name }}
+        </h1>
+        <div class="product--category">
+          Category: <a href="#">{{ product.department }}</a>
+        </div>
+
+        <p class="product--description">
+          {{ product.description }}
+        </p>
+        <dl class="product--attributes">
+          <dt>Color:</dt>
+          <dd>
+            <div class="color-swatch" :style="{ 'background-color': product.color }"></div>
+          </dd>
+          <dt>Materials:</dt>
+          <dd>
+            <ul class="product--materials">
+              <li v-for="material in product.materials">
+                {{ material }}
+              </li>
+            </ul>
+          </dd>
+
+          <dt>Availability:</dt>
+          <dd>{{ quantityDescription }}</dd>
+
+          <dt>Price:</dt>
+          <dd class="price">
+            {{ product.price | asCurrency }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
+          </dd>
+        </dl>
       </div>
-
-      <p class="product--description">
-        {{ product.description }}
-      </p>
-      <dl class="product--attributes">
-        <dt>Color:</dt>
-        <dd>
-          <div class="color-swatch" :style="{ 'background-color': product.color }"></div>
-        </dd>
-        <dt>Materials:</dt>
-        <dd>
-          <ul class="product--materials">
-            <li v-for="material in product.materials">
-              {{ material }}
-            </li>
-          </ul>
-        </dd>
-
-        <dt>Availability:</dt>
-        <dd>{{ quantityDescription }}</dd>
-
-        <dt>Price:</dt>
-        <dd class="price">
-          {{ product.price | asCurrency }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
-        </dd>
-      </dl>
-    </div>
-    <div class="product--footer">
-      <div class="product--actions">
-        <a class="btn" href="#">Edit product</a>
+      <div class="product--footer">
+        <div class="product--actions">
+          <router-link class="btn" :to="`/product/${id}/edit`">Edit product</router-link>
+        </div>
       </div>
-    </div>
-  </article>
+    </article>
+  </LoadingStatus>
 </template>
 
 <script>
+  import {getProductById} from '/src/productService';
+  import LoadingStatus from "/src/components/LoadingStatus";
+
   export default {
     props: {
-      product: {
-        type: Object,
-        default() {
-          return {};
+      id: Number
+    },
+    data() {
+      return {
+        product: {},
+        isLoading: false,
+        isError: false
+      }
+    },
+    created() {
+      this.fetchProduct();
+    },
+    watch: {
+      id() {
+        this.fetchProduct();
+      }
+    },
+    methods: {
+      fetchProduct() {
+        this.isLoading = true;
+        this.isError = false;
+
+        if (this.id >= 0) {
+          getProductById(this.id)
+            .then((p) => this.product = p)
+            .catch(() => this.isError = true)
+            .then(() => this.isLoading = false)
+        } else {
+          this.product = {};
+          this.isLoading = false;
+          this.isError = true;
         }
       }
     },
@@ -63,7 +95,8 @@
           return 'plenty in stock'
         }
       }
-    }
+    },
+    components: {LoadingStatus}
   }
 </script>
 
