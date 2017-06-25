@@ -2,7 +2,12 @@
   <div id="app">
 
     <nav class="navbar container">
-      <a class="navbar--brand" href="#">Vue.js (work)shop</a>
+      <a class="navbar--brand"
+         href="#"
+         :title="appName"
+      >
+        {{ appName }}
+      </a>
       <ul class="navbar--menu">
         <li class="active"><a href="#">Somewhere</a></li>
         <li class="active"><a href="#">Over</a></li>
@@ -11,9 +16,9 @@
     </nav>
 
     <section class="container">
-      <a class="btn" href="#less">Previous page</a>
-      1
-      <a class="btn" href="#more">Next page</a>
+      <a class="btn" href="#less" @click.prevent="page -= 1">Previous page</a>
+      {{ page }}
+      <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
     </section>
 
     <section class="container">
@@ -178,7 +183,13 @@
   export default {
     data() {
       return {
-        appName: "Vue.js (work)shop"
+        appName: "Vue.js (work)shop",
+        page: 1
+      }
+    },
+    methods: {
+      onClickNext() {
+        this.page = this.page + 1;
       }
     }
   }
