@@ -101,24 +101,6 @@ button,
   }
 }
 
-.form-row {
-  $labelWidth: 150px;
-
-  position: relative;
-  padding-left: $labelWidth;
-  margin-bottom: $gutter/2;
-
-  & > label {
-    position: absolute;
-    margin-left: -$labelWidth;
-    padding: 5px 3px;
-  }
-  label {
-    display: block;
-    margin-bottom: $gutter/6;
-  }
-}
-
 select,
 textarea,
 input[type=text],
@@ -139,13 +121,6 @@ input[type=color] {
 
 textarea {
   min-height: 100px;
-}
-
-.photo-preview {
-  display: block;
-  margin: $gutter/6 0;
-  max-width: 300px;
-  max-height: 300px;
 }
 
 .lozenge {

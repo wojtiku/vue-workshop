@@ -1,8 +1,10 @@
 import Vue from 'vue'
+import Vuelidate from 'vuelidate';
 import App from '/src/App.vue'
 
 Vue.config.productionTip = false
 
+Vue.use(Vuelidate);
 
 Vue.filter(
   "asCurrency",
@@ -22,4 +24,4 @@ Vue.directive(
 
 new Vue({
 	render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');
