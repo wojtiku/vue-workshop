@@ -38,34 +38,6 @@ a {
   }
 }
 
-.navbar {
-  @include box();
-  line-height: 30px;
-  @include clearfix();
-
-  &--brand {
-    font-size: 20px;
-    float: left;
-    margin-right: $gutter;
-    color: $c-black;
-    &:hover {
-      text-decoration: none;
-    }
-  }
-
-  &--menu {
-    float: left;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-
-    li {
-      display: inline-block;
-      margin-right: $gutter/2;
-    }
-  }
-}
-
 .product-list {
   list-style: none;
   padding: 0;

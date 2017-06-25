@@ -1,19 +1,7 @@
 <template>
   <div id="app">
 
-    <nav class="navbar container">
-      <a class="navbar--brand"
-         href="#"
-         :title="appName"
-      >
-        {{ appName }}
-      </a>
-      <ul class="navbar--menu">
-        <li class="active"><a href="#">Somewhere</a></li>
-        <li class="active"><a href="#">Over</a></li>
-        <li class="active"><a href="#">The rainbow</a></li>
-      </ul>
-    </nav>
+    <Navbar />
 
     <section class="container">
       <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
@@ -192,11 +180,11 @@
 
 <script>
   import {getAllProducts} from '/src/productService';
+  import Navbar from '/src/components/Navbar';
 
   export default {
     data() {
       return {
-        appName: "Vue.js (work)shop",
         page: 1,
         products: [],
         isLoading: true
@@ -240,6 +228,9 @@
       page() {
         this.reloadProducts();
       }
+    },
+    components: {
+        Navbar
     }
   }
 </script>
