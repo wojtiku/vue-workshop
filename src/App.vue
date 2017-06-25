@@ -16,19 +16,19 @@
     </nav>
 
     <section class="container">
-      <a class="btn" href="#less" @click.prevent="page -= 1">Previous page</a>
+      <a class="btn" href="#less" @click.prevent="(page) ? page -= 1 : 0">Previous page</a>
       {{ page }}
       <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
     </section>
 
     <section class="container">
       <ul class="product-list">
-        <li class="product-list--product">
+        <li class="product-list--product" v-for="n in page">
           <div class="ribbon" style="color: orangered;" />
             <img class="product-list--product--image" :src="product.photo" alt=""/>
             <div class="product-list--product--caption">
               <h4 class="product-list--product--name">
-                {{ product.name }}
+                {{ n }} {{ product.name }}
               </h4>
               <p class="product-list--product--description">
                 {{ product.description }}
