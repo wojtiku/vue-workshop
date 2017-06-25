@@ -25,18 +25,18 @@
       <ul class="product-list">
         <li class="product-list--product">
           <div class="ribbon" style="color: orangered;" />
-            <img class="product-list--product--image" src="/product-photos/1.jpeg" alt=""/>
+            <img class="product-list--product--image" :src="product.photo" alt=""/>
             <div class="product-list--product--caption">
               <h4 class="product-list--product--name">
-                Product title</h4>
+                {{ product.name }}
+              </h4>
               <p class="product-list--product--description">
-                Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+                {{ product.description }}
               </p>
             </div>
             <div class="product-list--product--footer">
               <p class="product-list--product--price price">
-                $21.000  <span class="lozenge">free shipping</span>
+                ${{ product.price }}  <span class="lozenge">free shipping</span>
               </p>
 
               <div class="product-list--product--actions">
@@ -49,17 +49,18 @@
 
     <div class="container">
       <article class="product">
-          <img class="product--image" src="/product-photos/1.jpeg" alt=""/>
+          <img class="product--image" :src="product.photo" alt=""/>
           <div class="product--caption">
             <h1 class="product--name">
-              Product title</h1>
+              {{ product.name }}
+            </h1>
             <div class="product--department">
-              Department: <a href="#">Electronics</a>
+              Department: <a href="#">{{ product.department }}</a>
             </div>
 
             <p class="product--description">
-              Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-              sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+              {{ product.description }}
+            </p>
             <dl class="product--attributes">
               <dt>Color:</dt>
               <dd>
@@ -79,7 +80,7 @@
 
               <dt>Price:</dt>
               <dd class="price">
-                $21.000 <span class="lozenge">free shipping</span>
+                ${{product.price }} <span class="lozenge">free shipping</span>
               </dd>
             </dl>
           </div>
@@ -94,49 +95,50 @@
     <div class="container">
 
       <form action="#" class="box product-edit">
-        <h2>Edit product X</h2>
+        <h2>Edit product</h2>
 
         <div class="form-row">
           <label for="edit-name">Name</label>
-          <input id="edit-name" type="text" />
+          <input id="edit-name" v-model.trim="product.name" type="text"/>
         </div>
 
         <div class="form-row">
           <label for="edit-photo">Photo</label>
-          <input id="edit-photo" type="text" />
-          <img class="photo-preview" src="/product-photos/1.jpeg" />
+          <input id="edit-photo" v-model.trim.lazy="product.photo" type="text"/>
+          <img class="photo-preview" :src="product.photo"/>
         </div>
 
         <div class="form-row">
           <label for="edit-desc">Description</label>
-          <textarea id="edit-desc"></textarea>
+          <textarea id="edit-desc" v-model="product.description"></textarea>
         </div>
 
         <div class="form-row">
           <label for="edit-color">Color</label>
-          <input type="color" id="edit-color" />
+          <input type="color" id="edit-color" v-model.trim="product.color"/>
         </div>
 
         <div class="form-row">
           <label>Materials</label>
           <div>
-            <label><input type="checkbox" value="Steel" /> Steel</label>
-            <label><input type="checkbox" value="Wooden" /> Wooden</label>
-            <label><input type="checkbox" value="Concrete" /> Concrete</label>
-            <label><input type="checkbox" value="Plastic" /> Plastic</label>
-            <label><input type="checkbox" value="Cotton" /> Cotton</label>
-            <label><input type="checkbox" value="Granite" /> Granite</label>
-            <label><input type="checkbox" value="Rubber" /> Rubber</label>
-            <label><input type="checkbox" value="Metal" /> Metal</label>
-            <label><input type="checkbox" value="Soft" /> Soft</label>
-            <label><input type="checkbox" value="Fresh" /> Fresh</label>
-            <label><input type="checkbox" value="Frozen" /> Frozen</label>
+            <label><input type="checkbox" value="Steel" v-model="product.materials"/> Steel</label>
+            <label><input type="checkbox" value="Wooden" v-model="product.materials"/> Wooden</label>
+            <label><input type="checkbox" value="Concrete" v-model="product.materials"/> Concrete</label>
+            <label><input type="checkbox" value="Plastic" v-model="product.materials"/> Plastic</label>
+            <label><input type="checkbox" value="Cotton" v-model="product.materials"/> Cotton</label>
+            <label><input type="checkbox" value="Granite" v-model="product.materials"/> Granite</label>
+            <label><input type="checkbox" value="Rubber" v-model="product.materials"/> Rubber</label>
+            <label><input type="checkbox" value="Metal" v-model="product.materials"/> Metal</label>
+            <label><input type="checkbox" value="Soft" v-model="product.materials"/> Soft</label>
+            <label><input type="checkbox" value="Fresh" v-model="product.materials"/> Fresh</label>
+            <label><input type="checkbox" value="Frozen" v-model="product.materials"/> Frozen</label>
           </div>
         </div>
 
         <div class="form-row">
           <label for="edit-department">Department</label>
-          <select id="edit-department">
+          <select id="edit-department" v-model="product.department">
+            <option disabled value="">Wybierz dział...</option>
             <option>Books</option>
             <option>Movies</option>
             <option>Music</option>
@@ -164,12 +166,12 @@
 
         <div class="form-row">
           <label for="edit-stock">In stock</label>
-          <input type="number" id="edit-stock" />
+          <input type="number" v-model.number="product.inStock" id="edit-stock"/>
         </div>
 
         <div class="form-row">
           <label for="edit-price">Price</label>
-          <input type="number" id="edit-price" />
+          <input type="number" v-model.number="product.price" id="edit-price"/>
         </div>
 
         <button type="submit" class="btn">Save product</button>
@@ -184,7 +186,21 @@
     data() {
       return {
         appName: "Vue.js (work)shop",
-        page: 1
+        page: 1,
+        product: {
+          "id": 0,
+          "name": "My updated product",
+          "price": "219.00",
+          "department": "Home",
+          "color": "#51452b",
+          "description": "Consequatur nam distinctio modi et omnis odio optio. Ut ipsum voluptatem. Voluptatem est voluptatem a. Sed et et sunt aut. Error hic dolor quas velit aut omnis repudiandae.",
+          "photo": "/product-photos/1.jpeg",
+          "inStock": 3,
+          "materials": [
+            "Granite",
+            "Plastic"
+          ]
+        }
       }
     },
     methods: {
