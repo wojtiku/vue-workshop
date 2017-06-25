@@ -1,6 +1,6 @@
 <template>
-  <LoadingStatus :isLoading="isLoading" :isError="isError">
-    <article class="product">
+  <LoadingStatus :isLoading="status.loading" :isError="status.error">
+    <article v-if="product" class="product">
       <img class="product--image" :src="product.photo" alt="" v-style-when-broken/>
       <div class="product--caption">
         <h1 class="product--name">
@@ -46,44 +46,22 @@
 </template>
 
 <script>
-  import {getProductById} from '/src/productService';
+  import {mapGetters, mapActions}  from 'vuex';
   import LoadingStatus from "/src/components/LoadingStatus";
 
   export default {
-    props: {
-      id: Number
-    },
-    data() {
-      return {
-        product: {},
-        isLoading: false,
-        isError: false
-      }
-    },
     created() {
-      this.fetchProduct();
+      this.fetchCurrentProduct();
     },
     watch: {
       id() {
-        this.fetchProduct();
+        this.fetchCurrentProduct();
       }
     },
     methods: {
-      fetchProduct() {
-        this.isLoading = true;
-        this.isError = false;
-
-        if (this.id >= 0) {
-          getProductById(this.id)
-            .then((p) => this.product = p)
-            .catch(() => this.isError = true)
-            .then(() => this.isLoading = false)
-        } else {
-          this.product = {};
-          this.isLoading = false;
-          this.isError = true;
-        }
-      }
+      ...mapActions([
+        "fetchCurrentProduct"
+      ])
     },
     computed: {
       quantityDescription() {
@@ -94,7 +72,12 @@
         } else {
           return 'plenty in stock'
         }
-      }
+      },
+      ...mapGetters({
+        id: "currentProductId",
+        status: "currentProductStatus",
+        product: "currentProduct"
+      })
     },
     components: {LoadingStatus}
   }
