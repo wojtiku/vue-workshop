@@ -40,7 +40,7 @@
             <div class="product-list--product--footer">
               <template v-if="product.inStock > 0">
                 <p class="product-list--product--price price">
-                  ${{ product.price }}  <span v-show="product.price > 20" class="lozenge">free shipping</span>
+                  {{ product.price | asCurrency }}  <span v-show="product.price > 20" class="lozenge">free shipping</span>
                 </p>
 
                 <div class="product-list--product--actions">
@@ -89,7 +89,7 @@
 
               <dt>Price:</dt>
               <dd class="price">
-                ${{product.price }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
+                {{product.price | asCurrency }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
               </dd>
             </dl>
           </div>
