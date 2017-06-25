@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router';
 import Vuelidate from 'vuelidate';
+import { sync } from 'vuex-router-sync';
 import store from '/src/store';
 import App from '/src/App.vue'
 import ProductsList from '/src/components/ProductsList';
@@ -34,8 +35,7 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      component: ProductsList,
-      props: (r) => ({ page: +r.query.page || 1 })
+      component: ProductsList
     },
     {
       path: '/product/:productId',
@@ -49,6 +49,8 @@ const router = new VueRouter({
     }
   ]
 });
+
+sync(store, router);
 
 new Vue({
 	render: h => h(App),

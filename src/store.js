@@ -8,6 +8,12 @@ export default new Vuex.Store({
     products: [],
   },
   getters: {
+    currentPageNumber: (state, getters, rootState) => {
+      if (rootState.route && rootState.route.query.page) {
+        return +rootState.route.query.page
+      }
+      return 1
+    },
     products: (state) => state.products,
   },
   mutations: {
