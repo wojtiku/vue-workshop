@@ -11,6 +11,7 @@ export default new Vuex.Store({
     products: [],
     productsStatus: {},
     currentProductStatus: {},
+    saveProductStatus: {}
   },
   getters: {
     currentPageNumber: (state, getters, rootState) => {
@@ -29,6 +30,7 @@ export default new Vuex.Store({
     productsStatus: (s) => s.productsStatus,
     currentProduct: (s, g) => s.products.find(withId(g.currentProductId)),
     currentProductStatus: (s) => s.currentProductStatus,
+    saveProductStatus: (s) => s.saveProductStatus
   },
   mutations: {
     updateProducts(state, newProducts) {
@@ -39,6 +41,9 @@ export default new Vuex.Store({
     },
     changeCurrentProductStatus(state, newCurrentProductStatus) {
       state.currentProductStatus = newCurrentProductStatus;
+    },
+    changeSaveProductStatus(state, newSaveProductStatus) {
+      state.saveProductStatus = newSaveProductStatus;
     },
     updateOrAddProduct(state, updatedProduct) {
       const productIdx = state.products.findIndex(withId(updatedProduct.id));
@@ -72,5 +77,14 @@ export default new Vuex.Store({
         }))
         .catch((e) => commit("changeCurrentProductStatus", { error: e }));
     },
+    saveProduct({ commit }, product) {
+      commit("changeSaveProductStatus", { loading: true });
+      return updateProduct(product)
+        .then((p) => {
+          commit("updateOrAddProduct", p);
+          commit("changeSaveProductStatus", { loading: false });
+        })
+        .catch((e) => commit("changeSaveProductStatus", { error: e }));
+    }
   }
 });
