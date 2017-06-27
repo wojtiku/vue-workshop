@@ -3,93 +3,15 @@
 
     <Navbar />
 
-    <section class="container">
-      <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
-      {{ page }}
-      <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
-    </section>
-
-    <div v-show="isLoading" class="spinner"></div>
-    <section v-show="!isLoading" class="container">
-      <ul class="product-list">
-        <li
-          v-for="product in products"
-          :key="product.id"
-          :class="{ highlight: product.price < 300 }"
-          class="product-list--product"
-        >
-          <div class="ribbon" :style="{ color: product.color }" />
-            <img class="product-list--product--image" :src="product.photo" alt="" v-style-when-broken />
-            <div class="product-list--product--caption">
-              <h4 class="product-list--product--name">
-                {{ product.name }}
-              </h4>
-              <p class="product-list--product--description">
-                {{ product.description }}
-              </p>
-            </div>
-            <div class="product-list--product--footer">
-              <template v-if="product.inStock > 0">
-                <p class="product-list--product--price price">
-                  {{ product.price | asCurrency }}  <span v-show="product.price > 20" class="lozenge">free shipping</span>
-                </p>
-
-                <div class="product-list--product--actions">
-                  <a class="btn" href="#">View product</a>
-                </div>
-              </template>
-              <template v-else>
-                <span class="lozenge">out of stock</span>
-                🐈🐕🐪
-              </template>
-            </div>
-        </li>
-      </ul>
-    </section>
+    <ProductsList
+      class="container"
+      v-bind="{ products, isLoading, page }"
+      @previous="onClickPrevious"
+      @next="onClickNext"
+    />
 
     <div class="container">
-      <article class="product">
-          <img class="product--image" :src="product.photo" alt="" v-style-when-broken/>
-          <div class="product--caption">
-            <h1 class="product--name">
-              {{ product.name }}
-            </h1>
-            <div class="product--department">
-              Department: <a href="#">{{ product.department }}</a>
-            </div>
-
-            <p class="product--description">
-              {{ product.description }}
-            </p>
-            <dl class="product--attributes">
-              <dt>Color:</dt>
-              <dd>
-                <div class="color-swatch" :style="{ 'background-color': product.color }"></div>
-              </dd>
-              <dt>Materials:</dt>
-              <dd>
-                <ul class="product--materials">
-                  <li v-for="material in product.materials">
-                    {{ material }}
-                  </li>
-                </ul>
-              </dd>
-
-              <dt>Availability:</dt>
-              <dd>{{ quantityDescription }}</dd>
-
-              <dt>Price:</dt>
-              <dd class="price">
-                {{product.price | asCurrency }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
-              </dd>
-            </dl>
-          </div>
-          <div class="product--footer">
-            <div class="product--actions">
-              <a class="btn" href="#">Edit product</a>
-            </div>
-          </div>
-      </article>
+      <ProductDetails :product="product" />
     </div>
 
     <div class="container">
@@ -184,6 +106,8 @@
 <script>
   import {getAllProducts} from '/src/productService';
   import Navbar from '/src/components/Navbar';
+  import ProductsList from '/src/components/ProductsList';
+  import ProductDetails from '/src/components/ProductDetails';
 
   export default {
     data() {
@@ -216,15 +140,6 @@
     computed: {
       product() {
         return (this.products.length > 0) ? this.products[0] : {};
-      },
-      quantityDescription() {
-        if (!this.product.inStock || this.product.inStock <= 0) {
-          return 'out of stock';
-        } else if (this.product.inStock < 5) {
-          return 'few in stock';
-        } else {
-          return 'plenty in stock'
-        }
       }
     },
     watch: {
@@ -233,7 +148,9 @@
       }
     },
     components: {
-        Navbar
+      Navbar,
+      ProductsList,
+      ProductDetails
     }
   }
 </script>
