@@ -1,9 +1,9 @@
 <template>
-  <LoadingStatus :isLoading="isLoading" :isError="isError">
-    <form action="#" @submit.prevent="saveProduct" class="box product-edit">
+  <LoadingStatus :isLoading="status.loading || saveStatus.loading" :isError="status.error">
+    <form action="#" @submit.prevent="submit" class="box product-edit">
       <h2>Edit product</h2>
 
-      <p v-if="saveError">
+      <p v-if="saveStatus.error">
         <span class="lozenge">ERROR</span> Could not save the product.
       </p>
 
@@ -93,54 +93,46 @@
 <script>
   import LoadingStatus from "/src/components/LoadingStatus";
   import {required, numeric} from 'vuelidate/lib/validators'
-  import {getProductById, updateProduct} from '/src/productService';
+  import {mapGetters, mapActions} from 'vuex';
 
   export default {
-    props: {
-      id: Number
-    },
     data() {
       return {
-        formProduct: {},
-        isLoading: true,
-        isError: false,
-        saveError: false,
+        formProduct: {}
       }
     },
-    created() {
-      this.fetchProduct();
+    computed: {
+      ...mapGetters({
+        id: "currentProductId",
+        status: "currentProductStatus",
+        currentProduct: "currentProduct",
+        saveStatus: "saveProductStatus"
+      })
     },
     watch: {
-      id() {
-        this.fetchProduct();
+      currentProductId: {
+        handler: "fetchCurrentProduct",
+        immediate: true
+      },
+      currentProduct() {
+        this.formProduct = {...this.currentProduct};
       }
     },
     methods: {
-      fetchProduct() {
-        this.isLoading = true;
-        this.isError = false;
-
-        if (this.id >= 0) {
-          getProductById(this.id)
-            .then((p) => this.formProduct = p)
-            .catch(() => this.isError = true)
-            .then(() => this.isLoading = false)
-        } else {
-          this.formProduct = {};
-          this.isLoading = false;
-          this.isError = true;
+      submit() {
+        if (!this.$v.$invalid) {
+          this.saveProduct(this.formProduct)
+            .then(() => {
+              if (!this.saveStatus.error) {
+                this.$router.push("/product/" + this.id)
+              }
+            });
         }
       },
-      saveProduct() {
-        if (!this.$v.$invalid) {
-          this.isLoading = true;
-          this.saveError = false;
-          updateProduct(this.formProduct)
-            .then(() => this.$router.push("/product/" + this.id))
-            .catch(() => this.saveError = true)
-            .then(() => this.isLoading = false);
-        }
-      }
+      ...mapActions([
+        "fetchCurrentProduct",
+        "saveProduct"
+      ])
     },
     validations: {
       formProduct: {
