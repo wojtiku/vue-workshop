@@ -6,19 +6,19 @@
       <a class="btn" href="#more" @click.prevent="$emit('next')">Next page</a>
     </p>
 
-    <div v-show="isLoading" class="spinner"></div>
-    <section v-show="!isLoading">
+    <LoadingStatus :isLoading="isLoading">
       <ul class="product-list">
         <ProductsListItem
           v-for="product in products"
           :key="product.id"
           :product="product"/>
       </ul>
-    </section>
+    </LoadingStatus>
   </div>
 </template>
 
 <script>
+  import LoadingStatus from "/src/components/LoadingStatus";
   import ProductsListItem from "/src/components/ProductsListItem";
 
   export default {
@@ -31,7 +31,8 @@
       products: Array
     },
     components: {
-      ProductsListItem
+      ProductsListItem,
+      LoadingStatus
     }
   }
 </script>
