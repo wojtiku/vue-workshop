@@ -1,9 +1,9 @@
 <template>
   <div>
     <p>
-      <a class="btn" href="#less" @click.prevent="$emit('previous')">Previous page</a>
+      <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
       {{ page }}
-      <a class="btn" href="#more" @click.prevent="$emit('next')">Next page</a>
+      <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
     </p>
 
     <LoadingStatus :isLoading="isLoading">
@@ -18,17 +18,42 @@
 </template>
 
 <script>
+  import {getAllProducts} from '/src/productService';
   import LoadingStatus from "/src/components/LoadingStatus";
   import ProductsListItem from "/src/components/ProductsListItem";
 
   export default {
-    props: {
-      page: {
-        type: Number,
-        default: 0
+    data() {
+      return {
+        page: 1,
+        products: [],
+        isLoading: true
+      }
+    },
+    created() {
+      this.reloadProducts();
+    },
+    methods: {
+      onClickNext() {
+        this.page = this.page + 1;
       },
-      isLoading: Boolean,
-      products: Array
+      onClickPrevious() {
+        if (this.page > 1) {
+          this.page = this.page - 1;
+        }
+      },
+      reloadProducts() {
+        this.isLoading = true;
+        getAllProducts(this.page)
+          .then((data) => this.products = data)
+          .catch((e) => this.products = [])
+          .then(() => this.isLoading = false);
+      }
+    },
+    watch: {
+      page() {
+        this.reloadProducts();
+      }
     },
     components: {
       ProductsListItem,

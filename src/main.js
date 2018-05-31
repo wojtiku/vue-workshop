@@ -1,10 +1,13 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router';
 import Vuelidate from 'vuelidate';
 import App from '/src/App.vue'
+import ProductsList from '/src/components/ProductsList';
 
 Vue.config.productionTip = false
 
 Vue.use(Vuelidate);
+Vue.use(VueRouter);
 
 Vue.filter(
   "asCurrency",
@@ -22,6 +25,13 @@ Vue.directive(
   }
 );
 
+const router = new VueRouter({
+  routes: [
+    { path: '/', component: ProductsList },
+  ]
+});
+
 new Vue({
-	render: h => h(App)
+	render: h => h(App),
+	router
 }).$mount('#app');
