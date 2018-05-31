@@ -1,18 +1,19 @@
 <template>
   <div>
-    <p>
-      <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
+    <p v-show="!isLoading && !(isFirstPage && isLastPage)">
+      <router-link :to="{ path: '/', query: { page: page - 1 } }" v-show="!isFirstPage" class="btn">Previous page</router-link>
       {{ page }}
-      <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
+      <router-link :to="{ path: '/', query: { page: page + 1 } }" v-show="!isLastPage" class="btn">Next page</router-link>
     </p>
 
     <LoadingStatus :isLoading="isLoading">
-      <ul class="product-list">
+      <ul v-if="products.length" class="product-list">
         <ProductsListItem
           v-for="product in products"
           :key="product.id"
           :product="product"/>
       </ul>
+      <p v-else>No products to be shown. Try a different page.</p>
     </LoadingStatus>
   </div>
 </template>
@@ -23,9 +24,11 @@
   import ProductsListItem from "/src/components/ProductsListItem";
 
   export default {
+    props: {
+      page: Number
+    },
     data() {
       return {
-        page: 1,
         products: [],
         isLoading: true
       }
@@ -33,15 +36,15 @@
     created() {
       this.reloadProducts();
     },
+    computed: {
+      isFirstPage() {
+        return this.page === 1;
+      },
+      isLastPage() {
+        return this.products.length === 0;
+      }
+    },
     methods: {
-      onClickNext() {
-        this.page = this.page + 1;
-      },
-      onClickPrevious() {
-        if (this.page > 1) {
-          this.page = this.page - 1;
-        }
-      },
       reloadProducts() {
         this.isLoading = true;
         getAllProducts(this.page)
