@@ -1,12 +1,12 @@
 <template>
   <div>
-    <p v-show="!isLoading && !(isFirstPage && isLastPage)">
+    <p v-show="!productsStatus.loading && !(isFirstPage && isLastPage)">
       <router-link :to="{ path: '/', query: { page: page - 1 } }" v-show="!isFirstPage" class="btn">Previous page</router-link>
       {{ page }}
       <router-link :to="{ path: '/', query: { page: page + 1 } }" v-show="!isLastPage" class="btn">Next page</router-link>
     </p>
 
-    <LoadingStatus :isLoading="isLoading">
+    <LoadingStatus :isLoading="productsStatus.loading" :isError="productsStatus.error">
       <ul v-if="products.length" class="product-list">
         <ProductsListItem
           v-for="product in products"
@@ -20,7 +20,6 @@
 
 <script>
   import {mapActions, mapGetters} from 'vuex';
-  import {getAllProducts} from '/src/productService';
   import LoadingStatus from "/src/components/LoadingStatus";
   import ProductsListItem from "/src/components/ProductsListItem";
 
@@ -31,7 +30,7 @@
       }
     },
     created() {
-      this.reloadProducts();
+      this.fetchProducts();
     },
     computed: {
       isFirstPage() {
@@ -44,22 +43,16 @@
         page: "currentPageNumber"
       }),
       ...mapGetters([
-        "products"
-      ]),
+        "products",
+        "productsStatus"
+      ])
     },
     methods: {
-      reloadProducts() {
-        this.isLoading = true;
-        getAllProducts(this.page)
-          .then((data) => this.updateProducts(data))
-          .catch((e) => this.updateProducts([]))
-          .then(() => this.isLoading = false);
-      },
-      ...mapActions(["updateProducts"])
+      ...mapActions(["fetchProducts"])
     },
     watch: {
       page() {
-        this.reloadProducts();
+        this.fetchProducts();
       }
     },
     components: {
