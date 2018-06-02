@@ -1,9 +1,13 @@
 import Navbar from '/src/components/Navbar';
-import {mount} from '@vue/test-utils';
+import {mount, RouterLinkStub} from '@vue/test-utils';
 
 describe("Navbar", () => {
     it("matches snapshot", () => {
-      const wrapper = mount(Navbar);
+      const wrapper = mount(Navbar, {
+        stubs: {
+          RouterLink: RouterLinkStub
+        }
+      });
       expect(wrapper.html()).toMatchSnapshot();
     });
 });
