@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductsList.vue should match snapshot 1`] = `
+<div>
+  <p><a class="btn" style="display: none;">Previous page</a>
+    1
+    <a class="btn">Next page</a></p>
+  <div class="container">
+    <ul class="product-list">
+      <products-list-item-stub product="[object Object]"></products-list-item-stub>
+      <products-list-item-stub product="[object Object]"></products-list-item-stub>
+      <products-list-item-stub product="[object Object]"></products-list-item-stub>
+      <products-list-item-stub product="[object Object]"></products-list-item-stub>
+    </ul>
+  </div>
+</div>
+`;
