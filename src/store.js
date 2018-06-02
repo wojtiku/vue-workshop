@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 const withId = (id) => (el) => el.id === id;
 
-export default new Vuex.Store({
+const store = {
   state: {
     products: [],
     productsStatus: {},
@@ -87,4 +87,7 @@ export default new Vuex.Store({
         .catch((e) => commit("changeSaveProductStatus", { error: e }));
     }
   }
-});
+};
+
+export default new Vuex.Store(store);
+export {store};
