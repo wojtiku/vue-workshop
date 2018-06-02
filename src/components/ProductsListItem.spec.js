@@ -4,10 +4,8 @@ import {mount, RouterLinkStub} from '@vue/test-utils';
 
 function instantiateWithProduct(partialProduct) {
   return mount(ProductsListItem, {
-    context: {
-      props: {
-        product: { ...mockProduct, ...partialProduct }
-      }
+    propsData: {
+      product: { ...mockProduct, ...partialProduct }
     },
     stubs: {
       RouterLink: RouterLinkStub
