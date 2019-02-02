@@ -70,7 +70,7 @@
     display: flex;
     flex-wrap: wrap;
 
-    &--product {
+    /deep/ &--product {
       $inRow: 4;
       flex-basis: calc(#{100%/$inRow} - #{$gutter});
     }
