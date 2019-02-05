@@ -1,5 +1,5 @@
 <template>
-  <LoadingStatus :isLoading="isLoading" :isError="isError">
+  <LoadingStatus :isLoading="formProductIsLoading" :isError="formProductIsError">
     <form action="#" @submit.prevent="saveProduct" class="box product-edit">
       <h2>Edit product</h2>
 
@@ -91,54 +91,30 @@
 </template>
 
 <script>
-  import LoadingStatus from "/src/components/LoadingStatus";
-  import {required, numeric} from 'vuelidate/lib/validators'
-  import {getProductById, updateProduct} from '/src/productService';
+import { createMixin } from '../productMixin'
+import LoadingStatus from "/src/components/LoadingStatus"
+import { numeric, required } from 'vuelidate/lib/validators'
+import { getProductById, updateProduct } from '/src/productService'
 
-  export default {
+export default {
+    mixins: [createMixin('formProduct', getProductById)],
     props: {
       id: Number
     },
     data() {
       return {
-        formProduct: {},
-        isLoading: true,
-        isError: false,
         saveError: false,
       }
     },
-    created() {
-      this.fetchProduct();
-    },
-    watch: {
-      id() {
-        this.fetchProduct();
-      }
-    },
     methods: {
-      fetchProduct() {
-        this.isLoading = true;
-        this.isError = false;
-
-        if (this.id >= 0) {
-          getProductById(this.id)
-            .then((p) => this.formProduct = p)
-            .catch(() => this.isError = true)
-            .then(() => this.isLoading = false)
-        } else {
-          this.formProduct = {};
-          this.isLoading = false;
-          this.isError = true;
-        }
-      },
       saveProduct() {
         if (!this.$v.$invalid) {
-          this.isLoading = true;
+          this.formProductIsLoading = true;
           this.saveError = false;
           updateProduct(this.formProduct)
             .then(() => this.$router.push("/product/" + this.id))
             .catch(() => this.saveError = true)
-            .then(() => this.isLoading = false);
+            .then(() => this.formProductIsLoading = false);
         }
       }
     },
