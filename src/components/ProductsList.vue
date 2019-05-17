@@ -7,9 +7,9 @@
     </p>
 
     <LoadingStatus :isLoading="isLoading">
-      <ul v-if="products.length" class="product-list">
+      <ul v-if="simpleStore.products.length" class="product-list">
         <ProductsListItem
-          v-for="product in products"
+          v-for="product in simpleStore.products"
           :key="product.id"
           :product="product"/>
       </ul>
@@ -19,18 +19,19 @@
 </template>
 
 <script>
-  import {mapActions, mapGetters} from 'vuex';
-  import {getAllProducts} from '/src/productService';
-  import LoadingStatus from "/src/components/LoadingStatus";
-  import ProductsListItem from "/src/components/ProductsListItem";
+import { getAllProducts } from '/src/productService'
+import LoadingStatus from "/src/components/LoadingStatus"
+import ProductsListItem from "/src/components/ProductsListItem"
+import { simpleStore } from '/src/simpleStore'
 
-  export default {
+export default {
     props: {
       page: Number
     },
     data() {
       return {
-        isLoading: true
+        isLoading: true,
+        simpleStore,
       }
     },
     created() {
@@ -43,19 +44,19 @@
       isLastPage() {
         return this.products.length === 0;
       },
-      ...mapGetters([
-        "products"
-      ]),
+      // ...mapGetters(["products"]),
     },
     methods: {
       reloadProducts() {
         this.isLoading = true;
         getAllProducts(this.page)
-          .then((data) => this.updateProducts(data))
-          .catch((e) => this.updateProducts([]))
+          .then((data) => simpleStore.products = data)
+          .catch((e) => simpleStore.products =[])
+          // .then((data) => this.updateProducts(data))
+          // .catch((e) => this.updateProducts([]))
           .then(() => this.isLoading = false);
       },
-      ...mapActions(["updateProducts"])
+      // ...mapActions(["updateProducts"])
     },
     watch: {
       page() {
